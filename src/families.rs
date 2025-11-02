@@ -1,5 +1,4 @@
 use std::fmt::Debug;
-use std::future::join;
 
 // ----- These traits help make sure the actual distributions are implemented correctly
 // ----- I have chosen Poisson and Normal/Gaussian, because they are easy.
