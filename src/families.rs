@@ -2,6 +2,7 @@ use std::fmt::Debug;
 use std::future::join;
 
 // ----- These traits help make sure the actual distributions are implemented correctly
+// ----- I have chosen Poisson and Normal/Gaussian, because they are easy.
 pub trait Link: Debug + Send + Sync {
     fn link(&self, mu:f64) -> f64;
     fn inv_link(&self, eta:f64) -> f64;
@@ -24,9 +25,10 @@ pub trait Family: Debug + Sync + Send {
 }
 
 // ----- These are the actual families
+
+// Poisson + The Linker
 #[derive(Debug, Clone, Copy, Default)]
 pub struct LogLink;
-
 impl Link for LogLink {
     fn link(&self, mu:f64) -> f64 {
         mu.ln().max(-30.0)
@@ -43,13 +45,11 @@ impl Link for LogLink {
 pub struct Poisson {
     link: LogLink,
 }
-
 impl Poisson {
     pub fn new() -> Self {
         Self { link: LogLink }
     }
 }
-
 impl Family for Poisson {
     type Link = LogLink;
 
@@ -61,9 +61,9 @@ impl Family for Poisson {
     }
 }
 
+// And the Gaussian/Normal and it's linker
 #[derive(Debug, Clone, Copy, Default)]
 pub struct IdentityLink;
-
 impl Link for IdentityLink {
     fn link(&self, mu:f64) -> f64 {
         mu
@@ -80,13 +80,11 @@ impl Link for IdentityLink {
 pub struct Gaussian {
     link: IdentityLink,
 }
-
 impl Gaussian {
     pub fn new() -> Self {
         Self { link: IdentityLink }
     }
 }
-
 impl Family for Gaussian {
     type Link = IdentityLink;
 

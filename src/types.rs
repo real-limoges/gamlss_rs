@@ -5,13 +5,14 @@ use std::ops::{Deref, DerefMut};
 pub type Vector = Array1<f64>;
 pub type Matrix = Array2<f64>;
 
-// ----- Newtypes for Safety
+// ----- Newtypes for Safety (Vectors)
 #[derive(Debug, Clone)]
 pub struct Coefficients(pub Vector);
 
 #[derive(Debug, Clone)]
 pub struct LogLambdas(pub Vector);
 
+// ----- Newtypes for Safety (Matrices)
 #[derive(Debug, Clone)]
 pub struct ModelMatrix(pub Matrix);
 
@@ -21,8 +22,8 @@ pub struct PenaltyMatrix(pub Matrix);
 #[derive(Debug, Clone)]
 pub struct CovarianceMatrix(pub Matrix);
 
-// ----- Impls for Newtypes
 
+// ----- Impls for Newtypes
 impl Deref for Coefficients {
     type Target = Vector;
     fn deref(&self) -> &Self::Target {

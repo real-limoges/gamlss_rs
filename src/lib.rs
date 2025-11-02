@@ -13,11 +13,11 @@ use families::Family;
 
 #[derive(Debug)]
 pub struct GeneralizedAdditiveModel {
+    // I'd like to return some other stuff in the future. Potentially optionally.
     pub coefficients: Coefficients,
     pub covariance: CovarianceMatrix,
     terms: Vec<Term>,
 }
-
 impl GeneralizedAdditiveModel {
     pub fn fit<F: Family> (
         x: &Matrix,

@@ -83,7 +83,9 @@ fn assemble_smooth(data: &DataFrame, n_obs: usize, smooth: &Smooth
     // each smooth has its own arm of the match
 
     match smooth {
-        Smooth::PSpline1D { col_name, n_splines, degree, penalty_order } => {
+        Smooth::PSpline1D {
+            col_name, n_splines, degree, penalty_order
+        } => {
             // super straight forward flow
             let x_col = get_col_as_f64(data, col_name, n_obs)?;
             let basis = create_basis_matrix(&x_col, *n_splines, *degree);
@@ -92,9 +94,11 @@ fn assemble_smooth(data: &DataFrame, n_obs: usize, smooth: &Smooth
             Ok((basis, vec![PenaltyMatrix(penalty)]))
         }
 
-        Smooth::TensorProduct { col_name_1, n_splines_1, penalty_order_1,
+        Smooth::TensorProduct {
+            col_name_1, n_splines_1, penalty_order_1,
             col_name_2, n_splines_2, penalty_order_2,
-            degree } => {
+            degree
+        } => {
 
             //  First set up both sidees of the product
             let x1 = get_col_as_f64(data, col_name_1, n_obs)?;
@@ -109,13 +113,17 @@ fn assemble_smooth(data: &DataFrame, n_obs: usize, smooth: &Smooth
 
             let mut basis = Matrix::zeroes((n_obs, n_coeffs_total));
 
+            // send the basis vectors into the blender
             for i in 0..n_obs {
                 let row1 = b1.row(i);
                 let row2 = b2.row(i);
-                let row_out = kronecker_product(&row1.insert_axis(Axis(0)), &row2.insert_axis(Axis(0)));
+                let row_out = kronecker_product(
+                    &row1.insert_axis(Axis(0)), &row2.insert_axis(Axis(0))
+                );
                 basis.row_mut(i).assign(&row_out);
             }
 
+            // this pushes them out the penalties into matrices
             let i_k1 = Matrix::eye(*n_splines_1);
             let i_k2 = Matrix::eye(*n_splines_2);
 

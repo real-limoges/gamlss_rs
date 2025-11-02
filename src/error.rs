@@ -1,6 +1,7 @@
 use thiserror::Error;
 use polars::prelude::PolarsError;
-
+// I haven't tried thiserror before. 
+// I've only written web stuff in Rust, so it had a different pattern
 #[derive(Debug, Error)]
 pub enum GamError {
     #[error(Optimization failed: {0})]

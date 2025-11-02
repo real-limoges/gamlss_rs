@@ -1,16 +1,16 @@
 #[derive(Debug, Clone)]
 pub enum Term {
+    // 3 types of Terms. A constant (Intercept), a Linear, and a Smooth
     Intercept,
-    // non-penalized linear term
     Linear {
         col_name: String,
     },
-    // smooth portion for one term
     Smooth(Smooth),
 }
 
 #[derive(Debug, Clone)]
 pub enum Smooth {
+    // 3 tyeps of smooths implemented right now
     PSpline1D {
         col_name: String,
         n_splines: usize,
