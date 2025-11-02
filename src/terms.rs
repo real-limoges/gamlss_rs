@@ -3,7 +3,7 @@ pub enum Term {
     Intercept,
     // non-penalized linear term
     Linear {
-        col_index: usize,
+        col_name: String,
     },
     // smooth portion for one term
     Smooth(Smooth),
@@ -12,17 +12,17 @@ pub enum Term {
 #[derive(Debug, Clone)]
 pub enum Smooth {
     PSpline1D {
-        col_index: usize,
+        col_name: String,
         n_splines: usize,
         degree: usize,
         penalty_order: usize,
     },
     TensorProduct {
-        col_index_1: usize,
+        col_name_1: String,
         n_splines_1: usize,
         penalty_order_1: usize,
 
-        col_index_2: usize,
+        col_name_2: String,
         n_splines_2: usize,
         penalty_order_2: usize,
 
@@ -30,6 +30,6 @@ pub enum Smooth {
         degree: usize,
     },
     RandomEffect {
-        col_index: usize,
+        col_name: String,
     },
 }

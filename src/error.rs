@@ -1,4 +1,5 @@
 use thiserror::Error;
+use polars::prelude::PolarsError;
 
 #[derive(Debug, Error)]
 pub enum GamError {
@@ -16,6 +17,9 @@ pub enum GamError {
 
     #[error("Invalid input: {0}")]
     Input(String),
+
+    #[error("Polars error: {0}")]
+    Polars(#[from] PolarsError),
 }
 
 impl From<argmin::core::Error> for GamError {
