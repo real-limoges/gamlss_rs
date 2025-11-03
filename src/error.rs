@@ -1,3 +1,4 @@
+use ndarray::ShapeError;
 use thiserror::Error;
 use polars::prelude::PolarsError;
 // I haven't tried thiserror before.
@@ -12,7 +13,7 @@ pub enum GamError {
     Linalg(#[from] ndarray_linalg::error::LinalgError),
 
     #[error("Array shape error: {0}")]
-    Shape(#[from] ndarray::ShapeError),
+    Shape(String),
 
     #[error("PIRLS algorithm failed to converge after {0} iterations")]
     Convergence(usize),

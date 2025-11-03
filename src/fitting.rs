@@ -1,22 +1,26 @@
 #![allow(unused_imports, unused_variables)]
+
+use argmin::core::{Error, Executor, Gradient};
+use argmin::solver::quasinewton::LBFGS;
 use super::error::GamError;
-use super::families::Family;
+use super::families;
+use super::families::{Family, Link};
 use super::splines::{create_basis_matrix, create_penalty_matrix, kronecker_product};
 use super::terms::{Term, Smooth};
 use super::types::*;
-use ndarray::{s, concatenate, Axis};
-
-
+use ndarray::{s, concatenate, Axis, Array1, Array2};
+use ndarray_linalg::Inverse;
+use ndarray_linalg::Solve;
+use argmin::core::CostFunction;
+use ndarray::ShapeError;
 use rand_distr::Distribution;
 
 use polars::datatypes::DataType;
-use polars::prelude::{ DataFrame, NamedFrom};
+use polars::prelude::*;
 
 // some constants around the PIRLS algorithm
 const MAX_PIRLS_ITER: usize = 25;
 const PIRLS_TOLERANCE: f64 = 1e-6;
-
-
 
 
 // Here's the good stuff
@@ -36,7 +40,8 @@ pub(crate) fn fit_model<F: Family>(
     for term in terms.iter() {
         match term {
             Term::Intercept => {
-                let part = Vector::ones(n_obs).into_shape((n_obs, 1))?;
+                let part = Vector::ones(n_obs).into_shape_with_order((n_obs, 1))
+                    .map_err(|e| GamError::Shape(e.to_string()))?;
                 model_matrix_parts.push(part);
                 total_coeffs += 1;
             }
@@ -66,6 +71,7 @@ pub(crate) fn fit_model<F: Family>(
             .map(|m| m.view())
             .collect::<Vec<_>>(),
     )?);
+
     let penalty_matrices = penalty_blocks
         .into_iter()
         .map(|(start_index, block)| {
@@ -76,7 +82,51 @@ pub(crate) fn fit_model<F: Family>(
             s_j
         })
         .collect::<Vec<_>>();
-    todo!()
+
+    let cost_function = GamCost {
+        x_matrix: &x_model,
+        y_vector: y,
+        penalty_matrices: &penalty_matrices,
+        family
+    };
+
+    let initial_log_lambdas = LogLambdas(Vector::zeros(penalty_matrices.len()));
+
+    // let solver = LBFGS::new(todo!(), todo!());
+
+    let res = Executor::new(cost_function, solver)
+        .configure(|state| state.param(initial_log_lambdas).max_iters(100))
+        .run()?;
+
+    let best_log_lambdas = res.state.best_param.unwrap();
+    let best_lambdas = best_log_lambdas.mapv(f64::exp);
+
+    let (beta, _, v_beta_unscaled, edf) = run_pirls(
+        &x_model,
+        y,
+        family,
+        &penalty_matrices,
+        &best_lambdas,
+    )?;
+
+    let phi = if std::any::TypeId::of::<F>() == std::any::TypeId::of::<families::Gaussian>() {
+        let n = y.len() as f64;
+        let eta = x_model.dot(&beta.0);
+        let mu = eta.mapv(|e| family.link().inv_link(e));
+        let variance = mu.mapv(|m| family.variance(m));
+
+        let residuals = y - &mu;
+        let pearson_residuals = &residuals / variance.mapv(f64::sqrt);
+        let res = pearson_residuals.mapv(|r| r.powi(2)).sum();
+
+        (res / (n - edf)).max(1e-10)
+    } else {
+        1.0
+    };
+
+    let v_beta = CovarianceMatrix(v_beta_unscaled.0 * phi);
+
+    Ok((beta, v_beta))
 }
 
 fn get_col_as_f64(data: &DataFrame, name: &str, n_obs: usize) -> Result<Vector, GamError> {
@@ -88,7 +138,10 @@ fn get_col_as_f64(data: &DataFrame, name: &str, n_obs: usize) -> Result<Vector, 
     } else {
         series.clone()
     };
-    let arr = f64_series.f64()?.to_ndarray()?.into_shape(n_obs)?;
+    // todo: open a PR about the private ndarray::error::ShapeError issue
+    let arr = f64_series.f64()?.to_ndarray()?
+        .to_shape(n_obs)
+        .map_err(|e| GamError::Shape(e.to_string()))?;
 
     Ok(Vector::from_vec(arr.to_vec()))
 }
@@ -148,8 +201,144 @@ fn assemble_smooth(data: &DataFrame, n_obs: usize, smooth: &Smooth
             Ok((basis, vec![PenaltyMatrix(penalty_1), PenaltyMatrix(penalty_2)]))
         },
         Smooth::RandomEffect { col_name } => {
+            let series = data.column(col_name)
+                .map_err(|e| GamError::Input(format!("Column '{}' not found: {}", col_name, e)))?;
 
-            todo!()
+            let cat_series = series.cast(&DataType::Categorical(None))?;
+            let id_codes = cat_series.to_physical_repr();
+
+            let n_groups = id_codes.n_unique()?;
+
+            let mut basis = Matrix::zeros((n_obs, n_groups));
+            let id_col_ndarray = id_codes.u32()?.to_ndarray()?;
+
+            for i in 0..n_obs {
+                let group_id = id_col_ndarray[i] as usize;
+                if group_id < n_groups {
+                    basis[[i, group_id]] = 1.0;
+                }
+            }
+            let penalty = Matrix::eye(n_groups);
+
+            Ok((basis, vec![PenaltyMatrix(penalty)]))
         }
     }
+}
+
+struct GamCost<'a, F: Family> {
+    x_matrix: &'a ModelMatrix,
+    y_vector: &'a Vector,
+    penalty_matrices: &'a Vec<PenaltyMatrix>,
+    family: &'a F,
+}
+impl<'a, F: Family> CostFunction for GamCost<'a, F> {
+    type Param = LogLambdas;
+    type Output = f64;
+
+    fn cost(&self, param: &Self::Param) -> Result<Self::Output, Error> {
+        let lambdas = param.mapv(f64::exp);
+
+        let (beta, _, _, edf) = run_pirls(
+            self.x_matrix,
+            self.y_vector,
+            self.family,
+            self.penalty_matrices,
+            &lambdas,
+        ).map_err(|e| Error::new(e))?;
+
+        let n = self.y_vector.len() as f64;
+        let eta = self.x_matrix.dot(&beta.0);
+        let mu = eta.mapv(|e| self.family.link().inv_link(e));
+        let variance = mu.mapv(|m| self.family.variance(m));
+
+        let residuals = self.y_vector - &mu;
+        let pearson_residuals = &residuals / variance.mapv(f64::sqrt);
+        let rss = pearson_residuals.mapv(|r| r.powi(2)).sum();
+
+        let denominator = (n - edf).powi(2);
+        if denominator.abs() < 1e-10 {
+            return Ok(f64::MAX);
+        }
+        let gcv_score = (n * rss) / denominator;
+
+        Ok(gcv_score)
+    }
+}
+impl<'a, F: families::Family> Gradient for GamCost<'a, F> {
+    type Param = LogLambdas;
+    type Gradient = LogLambdas;
+    fn gradient(&self, param: &Self::Param) -> Result<Self::Param, Error> {
+        const H: f64 = 1.4901161193847656e-8; // This seemingly random choice is (f64::EPSILON.sqrt())
+        let n = param.0.len();
+        let mut grad_vec = Array1::<f64>::zeros(n);
+        for i in 0..n {
+            let mut param_plus_h_vec = param.0.clone();
+            param_plus_h_vec += H;
+
+            let mut param_minus_h_vec = param.0.clone();
+            param_minus_h_vec -= H;
+
+            let cost_plus = self.cost(&LogLambdas(param_plus_h_vec))?;
+            let cost_minus = self.cost(&LogLambdas(param_minus_h_vec))?;
+
+            grad_vec[i] = (cost_plus - cost_minus) / (2.0 * H);
+        }
+        Ok(LogLambdas(grad_vec))
+    }
+
+}
+
+fn run_pirls<F: Family>(
+    x_matrix: &Matrix,
+    y_vector: &Vector,
+    family: &F,
+    penalty_matrices: &Vec<PenaltyMatrix>,
+    lambdas: &Vector
+) -> Result<(Coefficients, Vector, CovarianceMatrix, f64), GamError> {
+    // lifted some pirls code out of a numerical analysis book
+
+    let (n_obs, n_coeffs) = x_matrix.dim();
+
+    let mut s_lambda = Matrix::zeros((n_obs, n_coeffs));
+    for (i, s_j) in penalty_matrices.iter().enumerate() {
+        s_lambda.scaled_add(lambdas[i], s_j);
+    }
+
+    let mut beta = Coefficients(Array1::zeros(n_obs));
+    let y_mean = y_vector.mean().unwrap_or(0.5).max(0.01);
+
+    let mut eta = Array1::from_elem(n_obs, family.link().link(y_mean));
+    let mut w_diag = Array1::zeros(n_obs);
+    let mut z = Array1::zeros(n_obs);
+
+    // the actual PIRLS
+    for _iter in 0..MAX_PIRLS_ITER {
+        let mu = eta.mapv(|e| family.link().inv_link(e));
+        for i in 0..n_obs {
+            let (z_i, w_ii) = family.working_response_and_weights(y_vector[i], eta[i], mu[i], );
+            z[i] = z_i;
+            w_diag[i] = w_ii;
+        }
+        let w = Array2::from_diag(&w_diag);
+
+        let x_t_w = x_matrix.t().dot(&w);
+        let lhs = x_t_w.dot(x_matrix) + &s_lambda;
+        let rhs = x_t_w.dot(&z);
+
+        let new_beta = Coefficients(lhs.solve(&rhs)?);
+
+        let diff = (&new_beta.0 - &beta.0).mapv(f64::abs).sum();
+
+        if diff < PIRLS_TOLERANCE {
+            let v_beta_unscaled = CovarianceMatrix(lhs.inv()?);
+            let x_t_w_x_final = x_t_w.dot(x_matrix);
+            let edf = v_beta_unscaled.dot(&x_t_w_x_final).diag().sum();
+
+            return Ok((new_beta, w_diag, v_beta_unscaled, edf));
+        }
+
+        beta = new_beta;
+        eta = x_matrix.dot(&beta.0);
+    }
+    Err(GamError::Convergence(MAX_PIRLS_ITER))
 }
