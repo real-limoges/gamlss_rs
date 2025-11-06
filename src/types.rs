@@ -4,16 +4,13 @@ use ndarray::prelude::*;
 use std::ops::{Add, Deref, DerefMut, Sub};
 use argmin::core::ArgminError;
 use argmin_math::{ArgminAdd, ArgminSub, ArgminMul, ArgminL1Norm, ArgminL2Norm, ArgminMinMax, ArgminSignum, ArgminZeroLike, ArgminDot, ArgminScaledAdd};
-// ----- Mnemonics because the ndarray names stink
-pub type Vector = Array1<f64>;
-pub type Matrix = Array2<f64>;
 
 // ----- Newtypes for Safety (Vectors)
 #[derive(Debug, Clone)]
-pub struct Coefficients(pub Vector);
+pub struct Coefficients(pub Array1<f64>);
 
 #[derive(Clone, Debug)]
-pub struct LogLambdas(pub Vector);
+pub struct LogLambdas(pub Array1<f64>);
 
 macro_rules! impl_argmin_math_for_vector_wrapper {
     ($t:ty) => {
@@ -106,7 +103,7 @@ macro_rules! impl_argmin_math_for_vector_wrapper {
         }
 
         impl Deref for $t {
-            type Target = Vector;
+            type Target = Array1<f64>;
             fn deref(&self) -> &Self::Target {
                 &self.0
             }
@@ -125,79 +122,33 @@ impl_argmin_math_for_vector_wrapper!(Coefficients);
 impl_argmin_math_for_vector_wrapper!(LogLambdas);
 
 
+
 // ----- Newtypes for Safety (Matrices)
 #[derive(Debug, Clone)]
-pub struct ModelMatrix(pub Matrix);
+pub struct ModelMatrix(pub Array2<f64>);
 
 #[derive(Debug, Clone)]
-pub struct PenaltyMatrix(pub Matrix);
+pub struct PenaltyMatrix(pub Array2<f64>);
 
 #[derive(Debug, Clone)]
-pub struct CovarianceMatrix(pub Matrix);
+pub struct CovarianceMatrix(pub Array2<f64>);
 
-
-// ----- Impls for LogLambdas (I need to do a bunch of them for argmin_math)
-// impl Deref for LogLambdas {
-//     type Target = Vector;
-//     fn deref(&self) -> &Self::Target {
-//         &self.0
-//     }
-// }
-// impl DerefMut for LogLambdas {
-//     fn deref_mut(&mut self) -> &mut Self::Target {
-//         &mut self.0
-//     }
-// }
-
-// ----- Impls for everything else
-// impl Deref for Coefficients {
-//     type Target = Vector;
-//     fn deref(&self) -> &Self::Target {
-//         &self.0
-//     }
-// }
-// impl DerefMut for Coefficients {
-//     fn deref_mut(&mut self) -> &mut Self::Target {
-//         &mut self.0
-//     }
-// }
-
-
-
-impl Deref for ModelMatrix {
-    type Target = Matrix;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
+macro_rules! impl_deref_for_matrix_wrapper {
+    ($t:ty) => {
+        impl Deref for $t {
+            type Target = Array2<f64>;
+            fn deref(&self) -> &Self::Target {
+                &self.0
+            }
+        }
+        impl DerefMut for $t {
+            fn deref_mut(&mut self) -> &mut Self::Target {
+                &mut self.0
+            }
+        }
+    };
 }
 
-impl DerefMut for ModelMatrix {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-
-impl Deref for PenaltyMatrix {
-    type Target = Matrix;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl DerefMut for PenaltyMatrix {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-
-impl Deref for CovarianceMatrix {
-    type Target = Matrix;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl DerefMut for CovarianceMatrix {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
+impl_deref_for_matrix_wrapper!(CovarianceMatrix);
+impl_deref_for_matrix_wrapper!(PenaltyMatrix);
+impl_deref_for_matrix_wrapper!(ModelMatrix);

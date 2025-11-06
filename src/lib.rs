@@ -5,6 +5,7 @@ mod splines;
 mod types;
 mod terms;
 
+use ndarray::Array1;
 pub use error::GamError;
 pub mod families;
 pub use terms::Term;
@@ -15,15 +16,15 @@ use families::Family;
 
 #[derive(Debug)]
 pub struct GeneralizedAdditiveModel {
-    // I'd like to return some other stuff in the future. Potentially optionally.
-    pub coefficients: Coefficients,
-    pub covariance: CovarianceMatrix,
+    coefficients: Coefficients,
+    covariance: CovarianceMatrix,
     terms: Vec<Term>,
 }
+
 impl GeneralizedAdditiveModel {
     pub fn fit<F: Family + 'static> (
         data: &DataFrame,
-        y: &Vector,
+        y: &Array1<f64>,
         terms: &[Term],
         family: &F,
     ) -> Result<Self, GamError> {

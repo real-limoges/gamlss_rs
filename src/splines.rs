@@ -1,12 +1,12 @@
-use ndarray::s;
-use super::types::{Matrix, Vector};
+use std::arch::aarch64::float64x1_t;
+use ndarray::{s, Array1, Array2};
 
 
-pub fn create_basis_matrix(x: &Vector, n_splines: usize, degree: usize) -> Matrix {
+pub fn create_basis_matrix(x: &Array1<f64>, n_splines: usize, degree: usize) -> Array2<f64> {
     let n_obs = x.len();
     let knots = select_knots(x, n_splines, degree);
-
-    let mut basis_matrix = Matrix::zeros((n_obs, n_splines));
+    
+    let mut basis_matrix = Array2::<f64>::zeros((n_obs, n_splines));
 
     for (i, &x_i) in x.iter().enumerate() {
         let basis_evals = eval_all_bases(&knots, n_splines, degree, x_i);
@@ -61,7 +61,7 @@ fn eval_all_bases(knots: &[f64], n_splines: usize, degree: usize, x: f64) -> Vec
 }
 
 
-fn select_knots(x: &Vector, n_splines: usize, degree: usize) -> Vec<f64> {
+fn select_knots(x: &Array1<f64>, n_splines: usize, degree: usize) -> Vec<f64> {
     //  selects the correct number of knots for smooth terms
 
     let min_val = x.iter().fold(f64::INFINITY, |a, &b| a.min(b));
@@ -94,15 +94,15 @@ fn select_knots(x: &Vector, n_splines: usize, degree: usize) -> Vec<f64> {
 
 // P----- Add Penalty Matrices
 
-pub fn create_penalty_matrix(n_splines: usize, order: usize) -> Matrix {
+pub fn create_penalty_matrix(n_splines: usize, order: usize) -> Array2<f64> {
     // I only implemented two types of penalties. First and Second Order.
 
     let n_rows_d = n_splines.saturating_sub(order);
     if n_rows_d == 0 {
-        return Matrix::zeros((n_splines, n_splines));
+        return Array2::<f64>::zeros((n_splines, n_splines));
     }
 
-    let mut d_matrix = Matrix::zeros((n_rows_d, n_splines));
+    let mut d_matrix = Array2::<f64>::zeros((n_rows_d, n_splines));
     match order {
         1 =>
             for i in 0..n_rows_d {
@@ -120,11 +120,11 @@ pub fn create_penalty_matrix(n_splines: usize, order: usize) -> Matrix {
     d_matrix.t().dot(&d_matrix)
 }
 
-pub fn kronecker_product(a: &Matrix, b: &Matrix) -> Matrix {
+pub fn kronecker_product(a: &Array2<f64>, b: &Array2<f64>) -> Array2<f64> {
     // A little bit of linear algebra magic
     let (m,n) = a.dim();
     let (p,q) = b.dim();
-    let mut c = Matrix::zeros((m*p, p*q));
+    let mut c = Array2::<f64>::zeros((m*p, p*q));
 
     for i in 0..m {
         for j in 0..n {
