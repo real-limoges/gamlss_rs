@@ -1,8 +1,8 @@
 use super::{GamlssError, PenaltyMatrix, Smooth, Term};
-use crate::ModelMatrix;
 use crate::splines::{create_basis_matrix, create_penalty_matrix, kronecker_product};
+use crate::ModelMatrix;
 use ndarray::concatenate;
-use ndarray::{Array1, Array2, Axis, s, stack};
+use ndarray::{s, stack, Array1, Array2, Axis};
 use polars::chunked_array::ChunkedArray;
 use polars::prelude::ChunkUnique;
 use polars::prelude::{DataFrame, DataType, IntoSeries, NamedFrom, PolarsError, Series};

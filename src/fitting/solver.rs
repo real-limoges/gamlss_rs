@@ -1,7 +1,7 @@
 use super::{Coefficients, CovarianceMatrix, GamlssError, LogLambdas, ModelMatrix, PenaltyMatrix};
-use crate::Term;
 use crate::distributions;
 use crate::distributions::{Distribution, Gaussian, Link};
+use crate::Term;
 use argmin::core::Gradient;
 use argmin::core::{CostFunction, Error, Executor};
 use argmin::solver::linesearch::MoreThuenteLineSearch;

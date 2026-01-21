@@ -1,8 +1,8 @@
 use super::{Coefficients, CovarianceMatrix};
 use ndarray::{Array1, Array2};
 use ndarray_linalg::{Cholesky, UPLO};
-use rand::Rng;
 use rand::rng;
+use rand::Rng;
 use rand_distr::{Distribution, StandardNormal};
 
 pub fn sample_posterior(
