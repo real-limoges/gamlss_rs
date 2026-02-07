@@ -11,7 +11,7 @@ use super::error::GamlssError;
 use super::terms::{Smooth, Term};
 use super::types::*;
 use ndarray::Array1;
-use polars::prelude::DataFrame;
+use std::collections::HashMap as StdHashMap;
 use std::collections::HashMap;
 
 const DEFAULT_MAX_ITER: usize = 200;
@@ -102,7 +102,7 @@ struct FittingParameter {
 /// penalized iteratively reweighted least squares (P-IRLS) with a working response z
 /// and working weights w derived from the distribution's score and Fisher information.
 pub(crate) fn fit_gamlss<D: Distribution>(
-    data: &DataFrame,
+    data: &StdHashMap<String, Array1<f64>>,
     y: &Array1<f64>,
     formula: &HashMap<String, Vec<Term>>,
     family: &D,

@@ -3,6 +3,7 @@ pub mod diagnostics;
 pub mod distributions;
 mod error;
 pub mod fitting;
+mod linalg;
 mod math;
 pub mod preprocessing;
 mod splines;
