@@ -1,0 +1,1028 @@
+[
+  {
+    "scenario": "gaussian_linear",
+    "both_converged": true,
+    "r_time_ms": 32.5041,
+    "rust_time_ms": 0.863416,
+    "speedup": 37.64593197253699,
+    "fitted_mu_correlation": 0.9999999999944504,
+    "fitted_mu_max_diff": 4.996335340123892e-05,
+    "fitted_mu_rmse": 2.9433793572607967e-05,
+    "coefficient_comparison": {
+      "mu": {
+        "max_diff": 3.902017400658764e-05,
+        "r_values": [
+          1.7322,
+          3.0304
+        ],
+        "rust_values": [
+          1.7321609798259934,
+          3.030374482862893
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "mu_intercept_r": {
+        "true": 2.0,
+        "fitted": [
+          1.7322,
+          3.0304
+        ],
+        "error": null
+      },
+      "mu_intercept_rust": {
+        "true": 2.0,
+        "fitted": [
+          1.7321609798259934,
+          3.030374482862893
+        ],
+        "error": null
+      },
+      "mu_slope_r": {
+        "true": 3.0,
+        "fitted": [
+          1.7322,
+          3.0304
+        ],
+        "error": null
+      },
+      "mu_slope_rust": {
+        "true": 3.0,
+        "fitted": [
+          1.7321609798259934,
+          3.030374482862893
+        ],
+        "error": null
+      },
+      "sigma_rust": {
+        "true": 1.5,
+        "fitted": 0.4176392024772816,
+        "error": 1.0823607975227185
+      },
+      "log_sigma_rust": {
+        "true": 0.4054651081081644,
+        "fitted": 0.4176392024772816,
+        "error": 0.012174094369117205
+      }
+    }
+  },
+  {
+    "scenario": "gaussian_heteroskedastic",
+    "both_converged": true,
+    "r_time_ms": 19.3739,
+    "rust_time_ms": 0.383583,
+    "speedup": 50.507712802705015,
+    "fitted_mu_correlation": 0.9999999999877877,
+    "fitted_mu_max_diff": 0.0001621210977766907,
+    "fitted_mu_rmse": 6.75910966189051e-05,
+    "coefficient_comparison": {
+      "mu": {
+        "max_diff": 7.702933475961515e-06,
+        "r_values": [
+          4.8568,
+          2.0143
+        ],
+        "rust_values": [
+          4.856792297066524,
+          2.014306861658539
+        ]
+      },
+      "log_sigma": {
+        "max_diff": 0.013995619344036703,
+        "r_values": [
+          -0.4551,
+          0.1415
+        ],
+        "rust_values": [
+          -0.4411043806559633,
+          0.14036044032843772
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "mu_intercept_r": {
+        "true": 5.0,
+        "fitted": [
+          4.8568,
+          2.0143
+        ],
+        "error": null
+      },
+      "mu_intercept_rust": {
+        "true": 5.0,
+        "fitted": [
+          4.856792297066524,
+          2.014306861658539
+        ],
+        "error": null
+      },
+      "mu_slope_r": {
+        "true": 2.0,
+        "fitted": [
+          4.8568,
+          2.0143
+        ],
+        "error": null
+      },
+      "mu_slope_rust": {
+        "true": 2.0,
+        "fitted": [
+          4.856792297066524,
+          2.014306861658539
+        ],
+        "error": null
+      },
+      "log_sigma_intercept_r": {
+        "true": -0.5,
+        "fitted": [
+          -0.4551,
+          0.1415
+        ],
+        "error": null
+      },
+      "log_sigma_intercept_rust": {
+        "true": -0.5,
+        "fitted": [
+          -0.4411043806559633,
+          0.14036044032843772
+        ],
+        "error": null
+      },
+      "log_sigma_slope_r": {
+        "true": 0.15,
+        "fitted": [
+          -0.4551,
+          0.1415
+        ],
+        "error": null
+      },
+      "log_sigma_slope_rust": {
+        "true": 0.15,
+        "fitted": [
+          -0.4411043806559633,
+          0.14036044032843772
+        ],
+        "error": null
+      }
+    }
+  },
+  {
+    "scenario": "gaussian_smooth",
+    "both_converged": true,
+    "r_time_ms": 27.534,
+    "rust_time_ms": 5.782125,
+    "speedup": 4.761917115247422,
+    "fitted_mu_correlation": 0.9993035837710312,
+    "fitted_mu_max_diff": 0.09198138743576223,
+    "fitted_mu_rmse": 0.021618190421389,
+    "coefficient_comparison": {
+      "mu_smooth": {
+        "max_diff": 3.6615266774801354,
+        "r_values": [
+          1.5214,
+          2.3756,
+          0.5242,
+          0.258,
+          0.3479,
+          0.0301,
+          -0.5658,
+          0.4126,
+          0.2102,
+          -0.0877,
+          0.3385,
+          0.032,
+          0.321,
+          -0.0931,
+          0.2949,
+          -0.1307,
+          -0.3447,
+          0.0814,
+          -0.7702,
+          2.8563
+        ],
+        "rust_values": [
+          -0.1498281079382021,
+          0.12766604336702195,
+          0.526454357247556,
+          0.9577276648456061,
+          1.3410721515746438,
+          1.6725589086577983,
+          1.9605351101099073,
+          1.829127573307993,
+          1.652095074325217,
+          1.6467147727028253,
+          1.5720973328783316,
+          1.3348464509181035,
+          1.106570990151048,
+          1.2305150902519717,
+          1.4990801665242117,
+          1.761732686456374,
+          2.107147357730094,
+          2.547429114349213,
+          2.8913266774801354,
+          3.232881387435762
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "sigma_rust": {
+        "true": 0.5,
+        "fitted": -0.6910257671784612,
+        "error": 1.1910257671784612
+      }
+    }
+  },
+  {
+    "scenario": "gaussian_multiple",
+    "both_converged": true,
+    "r_time_ms": 9.6202,
+    "rust_time_ms": 0.40737500000000004,
+    "speedup": 23.61509665541577,
+    "fitted_mu_correlation": 0.9999999999711775,
+    "fitted_mu_max_diff": 4.999764084390179e-05,
+    "fitted_mu_rmse": 2.818386373032753e-05,
+    "coefficient_comparison": {
+      "mu": {
+        "max_diff": 3.2952839855937555e-05,
+        "r_values": [
+          1.068,
+          1.9912,
+          -1.5134,
+          0.4993
+        ],
+        "rust_values": [
+          1.0680072443323465,
+          1.991232952839856,
+          -1.5133768088687727,
+          0.4992851536928533
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "sigma_rust": {
+        "true": 1.0,
+        "fitted": -0.007792914149012002,
+        "error": 1.007792914149012
+      }
+    }
+  },
+  {
+    "scenario": "gaussian_large",
+    "both_converged": true,
+    "r_time_ms": 9.82,
+    "rust_time_ms": 1.512583,
+    "speedup": 6.492205716975532,
+    "fitted_mu_correlation": 0.9999999999944904,
+    "fitted_mu_max_diff": 4.998289268787204e-05,
+    "fitted_mu_rmse": 2.8792736387226694e-05,
+    "coefficient_comparison": {
+      "mu": {
+        "max_diff": 3.662961195161074e-05,
+        "r_values": [
+          1.9643,
+          3.0063
+        ],
+        "rust_values": [
+          1.9643107594393223,
+          3.0063366296119516
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "mu_intercept_r": {
+        "true": 2.0,
+        "fitted": [
+          1.9643,
+          3.0063
+        ],
+        "error": null
+      },
+      "mu_intercept_rust": {
+        "true": 2.0,
+        "fitted": [
+          1.9643107594393223,
+          3.0063366296119516
+        ],
+        "error": null
+      },
+      "mu_slope_r": {
+        "true": 3.0,
+        "fitted": [
+          1.9643,
+          3.0063
+        ],
+        "error": null
+      },
+      "mu_slope_rust": {
+        "true": 3.0,
+        "fitted": [
+          1.9643107594393223,
+          3.0063366296119516
+        ],
+        "error": null
+      },
+      "sigma_rust": {
+        "true": 1.5,
+        "fitted": 0.41746945680613634,
+        "error": 1.0825305431938637
+      },
+      "log_sigma_rust": {
+        "true": 0.4054651081081644,
+        "fitted": 0.41746945680613634,
+        "error": 0.012004348697971956
+      }
+    }
+  },
+  {
+    "scenario": "gaussian_quadratic",
+    "both_converged": true,
+    "r_time_ms": 23.3381,
+    "rust_time_ms": 5.5315,
+    "speedup": 4.219126819126819,
+    "fitted_mu_correlation": 0.9994515891887349,
+    "fitted_mu_max_diff": 0.04663160761964835,
+    "fitted_mu_rmse": 0.01307684246284627,
+    "coefficient_comparison": {
+      "mu_smooth": {
+        "max_diff": 2.5775590339299583,
+        "r_values": [
+          1.7863,
+          -0.0401,
+          -0.3488,
+          -0.0317,
+          -0.2668,
+          -0.2774,
+          0.013,
+          0.2084,
+          -0.3495,
+          0.1389,
+          -0.2118,
+          -0.1298,
+          -0.2221,
+          -0.0832,
+          -0.2607,
+          0.1434,
+          0.2151,
+          -0.088,
+          1.4133,
+          0.1799
+        ],
+        "rust_values": [
+          0.8847683923803517,
+          1.0267062919835392,
+          1.2241816446870473,
+          1.4156160709840315,
+          1.60935241848077,
+          1.8289277672811493,
+          2.094112652057625,
+          2.0613597775393853,
+          2.0622451517186553,
+          2.255474724383697,
+          2.365759033929958,
+          2.2506027505151867,
+          2.026754158352318,
+          1.978719446141044,
+          1.9065648442242582,
+          1.696430911722173,
+          1.425656328161215,
+          1.214494627542358,
+          1.0714760045020821,
+          1.0303487677746672
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "sigma_rust": {
+        "true": 0.5,
+        "fitted": -0.6909524085817208,
+        "error": 1.1909524085817207
+      }
+    }
+  },
+  {
+    "scenario": "poisson_linear",
+    "both_converged": true,
+    "r_time_ms": 14.4532,
+    "rust_time_ms": 0.19175,
+    "speedup": 75.37522816166884,
+    "fitted_mu_correlation": 0.9999999998451172,
+    "fitted_mu_max_diff": 4.9941945419185174e-05,
+    "fitted_mu_rmse": 2.9629485292176067e-05,
+    "coefficient_comparison": {
+      "log_mu": {
+        "max_diff": 4.585336074802715e-05,
+        "r_values": [
+          0.4376,
+          0.3144
+        ],
+        "rust_values": [
+          0.43755414663925196,
+          0.31443407898122966
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "log_mu_intercept_r": {
+        "true": 0.5,
+        "fitted": [
+          0.4376,
+          0.3144
+        ],
+        "error": null
+      },
+      "log_mu_intercept_rust": {
+        "true": 0.5,
+        "fitted": [
+          0.43755414663925196,
+          0.31443407898122966
+        ],
+        "error": null
+      },
+      "log_mu_slope_r": {
+        "true": 0.3,
+        "fitted": [
+          0.4376,
+          0.3144
+        ],
+        "error": null
+      },
+      "log_mu_slope_rust": {
+        "true": 0.3,
+        "fitted": [
+          0.43755414663925196,
+          0.31443407898122966
+        ],
+        "error": null
+      }
+    }
+  },
+  {
+    "scenario": "poisson_smooth",
+    "both_converged": true,
+    "r_time_ms": 75.6669,
+    "rust_time_ms": 6.2142919999999995,
+    "speedup": 12.176270442393117,
+    "fitted_mu_correlation": 0.9995809394858004,
+    "fitted_mu_max_diff": 0.12206761541542921,
+    "fitted_mu_rmse": 0.039739907882402906,
+    "coefficient_comparison": {
+      "log_mu_smooth": {
+        "max_diff": 1.8388051199073594,
+        "r_values": [
+          0.5019,
+          2.3889,
+          -0.05,
+          0.2562,
+          0.3476,
+          0.4308,
+          -0.0985,
+          0.021,
+          0.1447,
+          -0.042,
+          0.3578,
+          0.0039,
+          0.1506,
+          0.0018,
+          0.1564,
+          -0.089,
+          -0.2108,
+          0.0348,
+          -0.3335,
+          2.0011
+        ],
+        "rust_values": [
+          0.42948460488914963,
+          0.5500948800926405,
+          0.8657362735684275,
+          1.3066342544874203,
+          1.4958788451770244,
+          1.4313740842319904,
+          1.4860377394637891,
+          1.3070222749278364,
+          0.9509244617377806,
+          0.5491341048121848,
+          0.049482149051191436,
+          -0.23853701641911468,
+          -0.22607957049822203,
+          -0.32994221255239675,
+          -0.40849942580850984,
+          -0.35816895554947137,
+          -0.15522900068425788,
+          0.1811587704965963,
+          0.45348334618878616,
+          0.6444478742655112
+        ]
+      }
+    },
+    "true_param_recovery": {}
+  },
+  {
+    "scenario": "gamma_linear",
+    "both_converged": true,
+    "r_time_ms": 12.584,
+    "rust_time_ms": 2.416292,
+    "speedup": 5.207979830252304,
+    "fitted_mu_correlation": 0.9999999999401198,
+    "fitted_mu_max_diff": 4.9950615486515915e-05,
+    "fitted_mu_rmse": 3.00067272356839e-05,
+    "coefficient_comparison": {
+      "log_mu": {
+        "max_diff": 3.654243024975301e-05,
+        "r_values": [
+          1.0087,
+          0.5019
+        ],
+        "rust_values": [
+          1.0086634575697502,
+          0.5019183032045527
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "log_mu_intercept_r": {
+        "true": 1.0,
+        "fitted": [
+          1.0087,
+          0.5019
+        ],
+        "error": null
+      },
+      "log_mu_intercept_rust": {
+        "true": 1.0,
+        "fitted": [
+          1.0086634575697502,
+          0.5019183032045527
+        ],
+        "error": null
+      },
+      "log_mu_slope_r": {
+        "true": 0.5,
+        "fitted": [
+          1.0087,
+          0.5019
+        ],
+        "error": null
+      },
+      "log_mu_slope_rust": {
+        "true": 0.5,
+        "fitted": [
+          1.0086634575697502,
+          0.5019183032045527
+        ],
+        "error": null
+      },
+      "sigma_r": {
+        "true": 0.5,
+        "fitted": 0.5083,
+        "error": 0.008299999999999974
+      },
+      "sigma_rust": {
+        "true": 0.5,
+        "fitted": -0.65577635744971,
+        "error": 1.15577635744971
+      }
+    }
+  },
+  {
+    "scenario": "gamma_smooth",
+    "both_converged": true,
+    "r_time_ms": 91.1841,
+    "rust_time_ms": 55.044958,
+    "speedup": 1.65653864246749,
+    "fitted_mu_correlation": 0.9989449283268829,
+    "fitted_mu_max_diff": 0.1733427968331358,
+    "fitted_mu_rmse": 0.0473384821595893,
+    "coefficient_comparison": {
+      "log_mu_smooth": {
+        "max_diff": 1.4567497972807426,
+        "r_values": [
+          1.0138,
+          0.0705,
+          0.2329,
+          1.5299,
+          0.1025,
+          0.2423,
+          -0.1966,
+          0.0586,
+          0.1649,
+          -0.0255,
+          0.1453,
+          0.0425,
+          0.1972,
+          0.0051,
+          0.1302,
+          -0.0727,
+          -0.1422,
+          0.0398,
+          -0.3203,
+          1.3908
+        ],
+        "rust_values": [
+          1.0197886389106128,
+          1.1489367634224845,
+          1.3628909727289222,
+          1.5575742718848835,
+          1.4473018729328442,
+          1.0805568802206793,
+          0.6828084907934061,
+          0.452616382931418,
+          0.5789717852753832,
+          0.8852983752554031,
+          1.2915595881945958,
+          1.4992497972807426,
+          1.4523927884627048,
+          1.1992786951526353,
+          0.7821010643517685,
+          0.5419681296708891,
+          0.5044126669150254,
+          0.6804801765840316,
+          0.8634547038603224,
+          1.033519941960358
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "sigma_r": {
+        "true": 0.3,
+        "fitted": 0.3082,
+        "error": 0.008199999999999985
+      },
+      "sigma_rust": {
+        "true": 0.3,
+        "fitted": -1.1639137632747998,
+        "error": 1.4639137632747998
+      }
+    }
+  },
+  {
+    "scenario": "studentt_linear",
+    "both_converged": true,
+    "r_time_ms": 54.0359,
+    "rust_time_ms": 15.029791000000001,
+    "speedup": 3.5952529213480076,
+    "fitted_mu_correlation": 0.9999999999881891,
+    "fitted_mu_max_diff": 0.002839648773353076,
+    "fitted_mu_rmse": 0.0014447455096569764,
+    "coefficient_comparison": {
+      "mu": {
+        "max_diff": 0.0007477102173383265,
+        "r_values": [
+          2.8469,
+          2.0196
+        ],
+        "rust_values": [
+          2.8476477102173385,
+          2.0192090003851186
+        ]
+      },
+      "log_sigma": {
+        "max_diff": 0.013969686312344035,
+        "r_values": [
+          -0.0504
+        ],
+        "rust_values": [
+          -0.036430313687655966
+        ]
+      },
+      "log_nu": {
+        "max_diff": 0.07574669648820187,
+        "r_values": [
+          1.465
+        ],
+        "rust_values": [
+          1.540746696488202
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "mu_intercept_r": {
+        "true": 3.0,
+        "fitted": [
+          2.8469,
+          2.0196
+        ],
+        "error": null
+      },
+      "mu_intercept_rust": {
+        "true": 3.0,
+        "fitted": [
+          2.8476477102173385,
+          2.0192090003851186
+        ],
+        "error": null
+      },
+      "mu_slope_r": {
+        "true": 2.0,
+        "fitted": [
+          2.8469,
+          2.0196
+        ],
+        "error": null
+      },
+      "mu_slope_rust": {
+        "true": 2.0,
+        "fitted": [
+          2.8476477102173385,
+          2.0192090003851186
+        ],
+        "error": null
+      },
+      "sigma_r": {
+        "true": 1.0,
+        "fitted": -0.0504,
+        "error": 1.0504
+      },
+      "sigma_rust": {
+        "true": 1.0,
+        "fitted": -0.036430313687655966,
+        "error": 1.036430313687656
+      },
+      "nu_r": {
+        "true": 5.0,
+        "fitted": 1.465,
+        "error": 3.535
+      },
+      "nu_rust": {
+        "true": 5.0,
+        "fitted": 1.540746696488202,
+        "error": 3.4592533035117983
+      }
+    }
+  },
+  {
+    "scenario": "studentt_smooth",
+    "both_converged": true,
+    "r_time_ms": 135.7059,
+    "rust_time_ms": 71.231292,
+    "speedup": 1.9051444412941438,
+    "fitted_mu_correlation": 0.9995618893037976,
+    "fitted_mu_max_diff": 0.13019434111273032,
+    "fitted_mu_rmse": 0.04151977046776394,
+    "coefficient_comparison": {
+      "log_sigma": {
+        "max_diff": 0.0201275371191868,
+        "r_values": [
+          -0.7484
+        ],
+        "rust_values": [
+          -0.7282724628808132
+        ]
+      },
+      "log_nu": {
+        "max_diff": 0.08246226430546333,
+        "r_values": [
+          1.4645
+        ],
+        "rust_values": [
+          1.5469622643054632
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "sigma_r": {
+        "true": 0.5,
+        "fitted": -0.7484,
+        "error": 1.2484
+      },
+      "sigma_rust": {
+        "true": 0.5,
+        "fitted": -0.7282724628808132,
+        "error": 1.2282724628808133
+      },
+      "nu_r": {
+        "true": 5.0,
+        "fitted": 1.4645,
+        "error": 3.5355
+      },
+      "nu_rust": {
+        "true": 5.0,
+        "fitted": 1.5469622643054632,
+        "error": 3.4530377356945365
+      }
+    }
+  },
+  {
+    "scenario": "negative_binomial_linear",
+    "both_converged": true,
+    "r_time_ms": 20.5879,
+    "rust_time_ms": 9.258166,
+    "speedup": 2.2237557632904834,
+    "fitted_mu_correlation": 0.9999999999108411,
+    "fitted_mu_max_diff": 0.0003802539367914193,
+    "fitted_mu_rmse": 0.00012971132076931372,
+    "coefficient_comparison": {
+      "log_mu": {
+        "max_diff": 8.185538233584921e-05,
+        "r_values": [
+          1.0179,
+          0.2983
+        ],
+        "rust_values": [
+          1.0178181446176642,
+          0.29830192728167565
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "log_mu_intercept_r": {
+        "true": 1.0,
+        "fitted": [
+          1.0179,
+          0.2983
+        ],
+        "error": null
+      },
+      "log_mu_intercept_rust": {
+        "true": 1.0,
+        "fitted": [
+          1.0178181446176642,
+          0.29830192728167565
+        ],
+        "error": null
+      },
+      "log_mu_slope_r": {
+        "true": 0.3,
+        "fitted": [
+          1.0179,
+          0.2983
+        ],
+        "error": null
+      },
+      "log_mu_slope_rust": {
+        "true": 0.3,
+        "fitted": [
+          1.0178181446176642,
+          0.29830192728167565
+        ],
+        "error": null
+      },
+      "sigma_r": {
+        "true": 0.5,
+        "fitted": 0.4974,
+        "error": 0.002599999999999991
+      },
+      "sigma_rust": {
+        "true": 0.5,
+        "fitted": -1.3747246246443048,
+        "error": 1.8747246246443048
+      }
+    }
+  },
+  {
+    "scenario": "negative_binomial_smooth",
+    "both_converged": true,
+    "r_time_ms": 69.9949,
+    "rust_time_ms": 116.8115,
+    "speedup": 0.5992124063127346,
+    "fitted_mu_correlation": 0.999480475345284,
+    "fitted_mu_max_diff": 0.43970901577566135,
+    "fitted_mu_rmse": 0.06820209415639046,
+    "coefficient_comparison": {
+      "log_mu_smooth": {
+        "max_diff": 3.527381617085266,
+        "r_values": [
+          1.0249,
+          -0.0061,
+          -1.6167,
+          0.1285,
+          -0.2614,
+          -0.1685,
+          0.3072,
+          -0.0281,
+          -0.1975,
+          0.0376,
+          -0.1787,
+          -0.0223,
+          -0.1951,
+          -0.003,
+          -0.2092,
+          0.1049,
+          0.2219,
+          -0.066,
+          0.0464,
+          0.249
+        ],
+        "rust_values": [
+          2.0340790857779734,
+          1.9954579882762737,
+          1.910681617085266,
+          1.7312003187468425,
+          1.4591831217264,
+          1.1118665395454377,
+          0.7353663778246884,
+          0.3766387963243629,
+          0.10490426737833625,
+          0.004724657781851646,
+          0.08679503487397952,
+          0.2934301499827159,
+          0.5632776609895063,
+          0.8548463002998236,
+          1.1588748867304222,
+          1.4651077584624566,
+          1.6789377319359944,
+          1.8319871233065208,
+          1.9649711848987104,
+          2.0835716280912076
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "sigma_r": {
+        "true": 0.5,
+        "fitted": 0.5389,
+        "error": 0.038900000000000046
+      },
+      "sigma_rust": {
+        "true": 0.5,
+        "fitted": -1.217960626646369,
+        "error": 1.717960626646369
+      }
+    }
+  },
+  {
+    "scenario": "beta_linear",
+    "both_converged": true,
+    "r_time_ms": 85.7871,
+    "rust_time_ms": 1.6565830000000001,
+    "speedup": 51.7855730742136,
+    "fitted_mu_correlation": 0.9999999784109219,
+    "fitted_mu_max_diff": 8.02780112817425e-05,
+    "fitted_mu_rmse": 3.479468205901077e-05,
+    "coefficient_comparison": {
+      "logit_mu": {
+        "max_diff": 0.0001709263211746581,
+        "r_values": [
+          -1.0162,
+          0.994
+        ],
+        "rust_values": [
+          -1.0163329457459604,
+          0.9941709263211747
+        ]
+      },
+      "log_phi": {
+        "max_diff": 0.0015977534889972667,
+        "r_values": [
+          2.3092
+        ],
+        "rust_values": [
+          2.3107977534889974
+        ]
+      }
+    },
+    "true_param_recovery": {
+      "logit_mu_intercept_r": {
+        "true": -1.0,
+        "fitted": [
+          -1.0162,
+          0.994
+        ],
+        "error": null
+      },
+      "logit_mu_intercept_rust": {
+        "true": -1.0,
+        "fitted": [
+          -1.0163329457459604,
+          0.9941709263211747
+        ],
+        "error": null
+      },
+      "logit_mu_slope_r": {
+        "true": 1.0,
+        "fitted": [
+          -1.0162,
+          0.994
+        ],
+        "error": null
+      },
+      "logit_mu_slope_rust": {
+        "true": 1.0,
+        "fitted": [
+          -1.0163329457459604,
+          0.9941709263211747
+        ],
+        "error": null
+      },
+      "phi_r": {
+        "true": 10.0,
+        "fitted": 2.3092,
+        "error": 7.690799999999999
+      },
+      "phi_rust": {
+        "true": 10.0,
+        "fitted": 2.3107977534889974,
+        "error": 7.689202246511003
+      },
+      "log_phi_r": {
+        "true": 2.302585092994046,
+        "fitted": 2.3092,
+        "error": 0.00661490700595424
+      },
+      "log_phi_rust": {
+        "true": 2.302585092994046,
+        "fitted": 2.3107977534889974,
+        "error": 0.008212660494951507
+      }
+    }
+  }
+]

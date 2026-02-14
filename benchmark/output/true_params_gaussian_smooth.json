@@ -1,0 +1,4 @@
+{
+  "mu_function": "sin(x) + 0.5*x",
+  "sigma": 0.5
+}

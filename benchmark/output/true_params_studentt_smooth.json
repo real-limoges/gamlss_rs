@@ -1,0 +1,5 @@
+{
+  "functional_form": "2*sin(x)",
+  "sigma": 0.5,
+  "nu": 5.0
+}

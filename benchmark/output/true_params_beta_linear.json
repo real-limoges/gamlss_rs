@@ -1,0 +1,6 @@
+{
+  "logit_mu_intercept": -1.0,
+  "logit_mu_slope": 1.0,
+  "phi": 10.0,
+  "log_phi": 2.302585092994046
+}

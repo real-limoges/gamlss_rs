@@ -1,0 +1,4 @@
+{
+  "functional_form": "1 + 0.5*sin(2*x)",
+  "sigma": 0.3
+}

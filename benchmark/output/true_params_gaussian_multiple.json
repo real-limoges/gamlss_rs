@@ -1,0 +1,7 @@
+{
+  "intercept": 1.0,
+  "beta_x1": 2.0,
+  "beta_x2": -1.5,
+  "beta_x3": 0.5,
+  "sigma": 1.0
+}

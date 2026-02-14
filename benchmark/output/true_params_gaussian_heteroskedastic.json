@@ -1,0 +1,6 @@
+{
+  "mu_intercept": 5.0,
+  "mu_slope": 2.0,
+  "log_sigma_intercept": -0.5,
+  "log_sigma_slope": 0.15
+}
