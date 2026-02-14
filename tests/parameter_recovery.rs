@@ -1,3 +1,6 @@
+// Integration tests cannot run with the `python` feature due to PyO3's extension-module linking
+#![cfg(not(feature = "python"))]
+
 use gamlss_rs::{distributions::StudentT, DataSet, Formula, GamlssModel, Term};
 use ndarray::Array1;
 use rand::prelude::*;
