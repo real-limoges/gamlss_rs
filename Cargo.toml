@@ -19,8 +19,8 @@ serialization = ["serde", "serde_json", "ndarray/serde"]
 # WASM target (implies pure-rust + serialization, no parallel)
 wasm = ["pure-rust", "serialization", "wasm-bindgen", "getrandom_02", "getrandom_03", "getrandom"]
 
-# PyO3 Integration
-python = ["pyo3", "numpy", "serialization"]
+# PyO3 Integration (includes openblas backend + parallel for performance)
+python = ["pyo3", "numpy", "serialization", "openblas", "parallel"]
 
 # Parallelism (incompatible with WASM)
 parallel = ["rayon"]
